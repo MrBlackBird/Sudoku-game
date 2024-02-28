@@ -4,6 +4,8 @@
 #include <time.h>
 #include <algorithm>
 #include <unordered_set>
+#include <fstream>
+#include <sstream>
 
 //board properties
 struct Board{
@@ -226,15 +228,20 @@ void game_over_text(int turns, float t, bool outcome){
         std::cout<< "Game over - you loose!\n" << "Time: " << t << "\nUsed turnes: " << turns;
 }
 
-//pick difficulty level
+//pick level
 int pick_level(){
     int level;
-    std::cout<< "Pick difficulty level: ";
+    std::cout<< "Pick level [1-3]: ";
     std::cin>> level;
     return level;
 }
 
-void read_lev_from_file();
+void read_lev_from_file(){
+    //open file
+    std::ifstream file("levels.csv");
+    std::string line;
+    //FINISH
+}
 
 Board load_level(int dif_level);                                                                         //TODO
 
