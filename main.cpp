@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <fstream>
 #include <sstream>
+#include <chorono>
 
 //board properties
 struct Board{
@@ -220,8 +221,8 @@ bool check_win(bool correct_ent, bool full_board){
 }
 
 //game over message
-void game_over_text(int turns, float t, bool outcome){
-    if(outcome == true){
+void game_over_text(int turns, float t, bool win){
+    if(win == true){
         std::cout<< "Game over - you win!\n" << "Time: " << t << "\nUsed turnes: " << turns;
     }
     else
@@ -229,21 +230,42 @@ void game_over_text(int turns, float t, bool outcome){
 }
 
 //pick level
-int pick_level(){
-    int level;
+std::string pick_level(){
+    std::string level;
     std::cout<< "Pick level [1-3]: ";
     std::cin>> level;
     return level;
 }
 
-void read_lev_from_file(){
+//add conversion for coordinates
+//int convert_str_to_int(std::string ch){
+//    return conv_int = (int)ch - 48;
+//}
+
+void append_lev(Board &b){
+    ; //finish
+}
+
+void read_load_level(Board &b, std::string level){
     //open file
     std::ifstream file("levels.csv");
     std::string line;
-    //FINISH
-}
+    //searched lvl -> level
+    while(std::getline(file, line)){
+        std::istringstream iss(line);
+        std::string lev, row, num, pos;
 
-Board load_level(int dif_level);                                                                         //TODO
+        //read the entries
+        if(std::getline(iss, lev, ',') && std::getline(iss, row, ',') && std::getline(iss, num, ',') && std::getline(iss, pos, ',')){
+            if(lev == level){
+                ; //add appending to board
+            }
+        }
+    }
+
+
+    file.close();
+}
 
 //main body
 int main()
@@ -253,11 +275,17 @@ int main()
     board = create_board();
 
     //variables
-    //int turn = 1;
+    int turn = 0;
     int xcord = 0, ycord = 0;
+    float time = 0;
     std::string num;
     bool game_over = false;
-
+    int lvl = pick_level();
+    read_load_level(board, lvl);
+    
+    //start timer
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    
     while(game_over == false){
 
         //get input
@@ -285,7 +313,14 @@ int main()
         //print board
         print_board(board);
 
-        //turn++;
+        turn++;
+        
+        //endgame
+        if(check_win(endgame_checker(board), board_full(board)) == true){
+            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+            time = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
+            game_over_text(turn, time, check_win(endgame_checker(board), board_full(board));
+        }
     }
 
     return 0;
