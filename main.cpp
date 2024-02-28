@@ -238,18 +238,35 @@ std::string pick_level(){
 }
 
 //add conversion for coordinates
-//int convert_str_to_int(std::string ch){
-//    return conv_int = (int)ch - 48;
-//}
-
-void append_lev(Board &b){
-    ; //finish
+int convert_str_to_int(char ch){
+    return conv_int = (int)ch - 48;
 }
 
-void read_load_level(Board &b, std::string level){
+void append_int(std::vector<int> &target_vec, std::string cords){
+    for(int i = 0; i < cords.size(); i++){
+        target_vec.emplace_back(convert_str_to_int((std::string)cords[i]));
+    }
+}
+
+void append_str(std::vector<std::string> &target_vec, std::string nums){
+    for(int i = 0; i < nums.size(); i++){
+        target_vec.emplace_back(nums[i]);
+    }
+}
+
+void load_level(Board &b, std::vector<std::string> num, std::vector<int> cor){
+    ;//TODO
+}
+
+void read_level(Board &b, std::string level){
     //open file
     std::ifstream file("levels.csv");
     std::string line;
+
+    //for coordinates
+    std::vector<int> cords;
+    std::vector<std::string> nums;
+
     //searched lvl -> level
     while(std::getline(file, line)){
         std::istringstream iss(line);
@@ -258,7 +275,11 @@ void read_load_level(Board &b, std::string level){
         //read the entries
         if(std::getline(iss, lev, ',') && std::getline(iss, row, ',') && std::getline(iss, num, ',') && std::getline(iss, pos, ',')){
             if(lev == level){
-                ; //add appending to board
+                //fill cords and nums
+                append_str(nums,num);
+                append_int(cords,pos);
+                //load board
+                load_level();
             }
         }
     }
