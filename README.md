@@ -1,2 +1,2 @@
 # Sudoku-game
- Sudoku game in c++ (work in progres)
+ Sudoku game with a terminal interface, made in c++ (work in progres)
