@@ -1,12 +1,10 @@
 //sudoku game
 #include <iostream>
 #include <vector>
-#include <time.h>
-#include <algorithm>
 #include <unordered_set>
 #include <fstream>
 #include <sstream>
-#include <chorono>
+#include <chrono>
 
 //board properties
 struct Board{
@@ -239,12 +237,13 @@ std::string pick_level(){
 
 //add conversion for coordinates
 int convert_str_to_int(char ch){
-    return conv_int = (int)ch - 48;
+    int conv_int = ch - '0';
+    return conv_int;
 }
 
 void append_int(std::vector<int> &target_vec, std::string cords){
-    for(int i = 0; i < cords.size(); i++){
-        target_vec.emplace_back(convert_str_to_int((std::string)cords[i]));
+    for(char ch : cords){
+        target_vec.emplace_back(convert_str_to_int(ch));
     }
 }
 
@@ -254,8 +253,15 @@ void append_str(std::vector<std::string> &target_vec, std::string nums){
     }
 }
 
-void load_level(Board &b, std::vector<std::string> num, std::vector<int> cor){
-    ;//TODO
+void load_level(Board &b, std::vector<std::string> num, std::vector<int> cor, int row){
+    // Iterate over the numbers and their corresponding positions
+    for (int i = 0; i < num.size(); ++i) {
+        // Calculate the column from the 1D coordinate
+        int col = cor[i] % 9;
+
+        // Place the number on the board at the specified row and column
+        b.brd[row][col] = num[i];
+    }
 }
 
 void read_level(Board &b, std::string level){
@@ -268,6 +274,7 @@ void read_level(Board &b, std::string level){
     std::vector<std::string> nums;
 
     //searched lvl -> level
+    std::string r;
     while(std::getline(file, line)){
         std::istringstream iss(line);
         std::string lev, row, num, pos;
@@ -278,14 +285,16 @@ void read_level(Board &b, std::string level){
                 //fill cords and nums
                 append_str(nums,num);
                 append_int(cords,pos);
-                //load board
-                load_level();
+                r = row;
             }
         }
     }
 
-
     file.close();
+
+    //load board
+    load_level(b, nums, cords, convert_str_to_int(r[0]));
+
 }
 
 //main body
@@ -301,8 +310,8 @@ int main()
     float time = 0;
     std::string num;
     bool game_over = false;
-    int lvl = pick_level();
-    read_load_level(board, lvl);
+    std::string lvl = pick_level();
+    read_level(board, lvl);
     
     //start timer
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
@@ -340,7 +349,7 @@ int main()
         if(check_win(endgame_checker(board), board_full(board)) == true){
             std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
             time = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
-            game_over_text(turn, time, check_win(endgame_checker(board), board_full(board));
+            game_over_text(turn, time, check_win(endgame_checker(board), board_full(board)));
         }
     }
 
