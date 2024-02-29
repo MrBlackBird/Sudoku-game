@@ -248,8 +248,8 @@ void append_int(std::vector<int> &target_vec, std::string cords){
 }
 
 void append_str(std::vector<std::string> &target_vec, std::string nums){
-    for(int i = 0; i < nums.size(); i++){
-        target_vec.emplace_back(nums[i]);
+    for(char ch : nums){
+        target_vec.emplace_back(std::string(1, ch));
     }
 }
 
