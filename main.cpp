@@ -351,6 +351,12 @@ int main()
             game_over_text(turn, time, check_win(endgame_checker(board), board_full(board)));
             game_over = true; // Exit the game loop
         }
+        else if(board_full(board) == true && check_win(endgame_checker(board), board_full(board)) == false){
+            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+            time = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
+            game_over_text(turn, time, check_win(endgame_checker(board), board_full(board)));
+            game_over = true; // Exit the game loop
+        }
     }
 
     return 0;
