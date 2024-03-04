@@ -310,6 +310,7 @@ int main()
     bool game_over = false;
     std::string lvl = pick_level();
     read_level(board, lvl);
+    print_board(board);
 
     //start timer
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
