@@ -259,7 +259,7 @@ void load_level(Board &b, std::vector<std::string> num, std::vector<int> cor, in
 
 void read_level(Board &b, std::string level){
     // Open file
-    std::ifstream file("YOUR PATH HERE");
+    std::ifstream file("YOUR PATH TO LEVELS.CSV HERE");
     std::string line;
 
     // Clear the board
@@ -278,7 +278,7 @@ void read_level(Board &b, std::string level){
                 int row = std::stoi(row_str);
 
                 // Parse numbers and positions
-                for(size_t i = 0; i < nums_str.size(); ++i){
+                for(size_t i = 0; i < nums_str.size(); i++){
                     std::string num = std::string(1, nums_str[i]);
                     int pos = pos_str[i] - '0';
                     int col = pos % 9;
