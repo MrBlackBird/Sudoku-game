@@ -1,4 +1,3 @@
-//sudoku game
 #include <iostream>
 #include <vector>
 #include <unordered_set>
@@ -126,7 +125,7 @@ bool pos_empty_checker(Board &b, int x, int y, std::string entry){
         return true;
     }
     else{
-        if(entry == "e"){           //added exeption for erasing numbers
+        if(entry == "e"){           //added exception for erasing numbers
             return true;
         }
         else
@@ -224,7 +223,7 @@ void game_over_text(int turns, float t, bool win){
         std::cout<< "Game over - you win!\n" << "Time: " << t << "\nUsed turnes: " << turns;
     }
     else
-        std::cout<< "Game over - you loose!\n" << "Time: " << t << "\nUsed turnes: " << turns;
+        std::cout<< "Game over - you lose!\n" << "Time: " << t << "\nUsed turns: " << turns;
 }
 
 //pick level
@@ -235,27 +234,21 @@ std::string pick_level(){
     return level;
 }
 
-//add conversion for coordinates
-int convert_str_to_int(char ch){
-    int conv_int = ch - '0';
-    return conv_int;
-}
-
 void append_int(std::vector<int> &target_vec, std::string cords){
     for(char ch : cords){
-        target_vec.emplace_back(convert_str_to_int(ch));
+        target_vec.emplace_back(ch - '0');
     }
 }
 
 void append_str(std::vector<std::string> &target_vec, std::string nums){
-    for(int i = 0; i < nums.size(); i++){
-        target_vec.emplace_back(nums[i]);
+    for(char ch : nums){
+        target_vec.emplace_back(std::string(1, ch));
     }
 }
 
 void load_level(Board &b, std::vector<std::string> num, std::vector<int> cor, int row){
     // Iterate over the numbers and their corresponding positions
-    for (int i = 0; i < num.size(); ++i) {
+    for (size_t i = 0; i < num.size(); ++i) {
         // Calculate the column from the 1D coordinate
         int col = cor[i] % 9;
 
@@ -265,36 +258,37 @@ void load_level(Board &b, std::vector<std::string> num, std::vector<int> cor, in
 }
 
 void read_level(Board &b, std::string level){
-    //open file
-    std::ifstream file("levels.csv");
+    // Open file
+    std::ifstream file("YOUR PATH HERE");
     std::string line;
 
-    //for coordinates
-    std::vector<int> cords;
-    std::vector<std::string> nums;
+    // Clear the board
+    b = create_board();
 
-    //searched lvl -> level
-    std::string r;
+    // Read each line of the file
     while(std::getline(file, line)){
         std::istringstream iss(line);
-        std::string lev, row, num, pos;
+        std::string lev, row_str, nums_str, pos_str;
 
-        //read the entries
-        if(std::getline(iss, lev, ',') && std::getline(iss, row, ',') && std::getline(iss, num, ',') && std::getline(iss, pos, ',')){
+        // Read the level, row, numbers, and positions from the line
+        if(std::getline(iss, lev, ',') && std::getline(iss, row_str, ',') && std::getline(iss, nums_str, ',') && std::getline(iss, pos_str, ',')){
+            // Check if the level matches
             if(lev == level){
-                //fill cords and nums
-                append_str(nums,num);
-                append_int(cords,pos);
-                r = row;
+                // Convert row number from string to integer
+                int row = std::stoi(row_str);
+
+                // Parse numbers and positions
+                for(size_t i = 0; i < nums_str.size(); ++i){
+                    std::string num = std::string(1, nums_str[i]);
+                    int pos = pos_str[i] - '0';
+                    int col = pos % 9;
+                    b.brd[row][col] = num;
+                }
             }
         }
     }
 
     file.close();
-
-    //load board
-    load_level(b, nums, cords, convert_str_to_int(r[0]));
-
 }
 
 //main body
@@ -312,10 +306,10 @@ int main()
     bool game_over = false;
     std::string lvl = pick_level();
     read_level(board, lvl);
-    
+
     //start timer
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    
+
     while(game_over == false){
 
         //get input
@@ -325,7 +319,7 @@ int main()
             std::cout<< "Coordinates: ";
             std::cin>> xcord >> ycord;
 
-            //cheking input
+            //checking input
             if(input_checker(xcord, ycord, num) == true && pos_empty_checker(board, xcord, ycord, num) == true){           //correct values? position not empty?
                 break;
             }
@@ -344,12 +338,13 @@ int main()
         print_board(board);
 
         turn++;
-        
+
         //endgame
         if(check_win(endgame_checker(board), board_full(board)) == true){
             std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
             time = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
             game_over_text(turn, time, check_win(endgame_checker(board), board_full(board)));
+            game_over = true; // Exit the game loop
         }
     }
 
