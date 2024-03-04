@@ -234,50 +234,54 @@ std::string pick_level(){
     return level;
 }
 
+//filling cord vector
 void append_int(std::vector<int> &target_vec, std::string cords){
     for(char ch : cords){
         target_vec.emplace_back(ch - '0');
     }
 }
 
+//filling nums vector
 void append_str(std::vector<std::string> &target_vec, std::string nums){
     for(char ch : nums){
         target_vec.emplace_back(std::string(1, ch));
     }
 }
 
+//loading chosen level
 void load_level(Board &b, std::vector<std::string> num, std::vector<int> cor, int row){
-    // Iterate over the numbers and their corresponding positions
+    //go over the numbers and their corresponding positions
     for (size_t i = 0; i < num.size(); ++i) {
-        // Calculate the column from the 1D coordinate
+        //column from the 1D coordinate
         int col = cor[i] % 9;
 
-        // Place the number on the board at the specified row and column
+        //place the number on the board
         b.brd[row][col] = num[i];
     }
 }
 
+//reading level from .csv file
 void read_level(Board &b, std::string level){
-    // Open file
+    //open file
     std::ifstream file("YOUR PATH TO LEVELS.CSV HERE");
     std::string line;
 
-    // Clear the board
+    //clear the board
     b = create_board();
 
-    // Read each line of the file
+    //read lines
     while(std::getline(file, line)){
         std::istringstream iss(line);
         std::string lev, row_str, nums_str, pos_str;
 
-        // Read the level, row, numbers, and positions from the line
+        //read level, row, numbers, and positions
         if(std::getline(iss, lev, ',') && std::getline(iss, row_str, ',') && std::getline(iss, nums_str, ',') && std::getline(iss, pos_str, ',')){
-            // Check if the level matches
+            //check if the level matches
             if(lev == level){
-                // Convert row number from string to integer
+                //convert row number from str to int
                 int row = std::stoi(row_str);
 
-                // Parse numbers and positions
+                //parse numbers and positions
                 for(size_t i = 0; i < nums_str.size(); i++){
                     std::string num = std::string(1, nums_str[i]);
                     int pos = pos_str[i] - '0';
