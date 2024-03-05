@@ -220,10 +220,10 @@ bool check_win(bool correct_ent, bool full_board){
 //game over message
 void game_over_text(int turns, float t, bool win){
     if(win == true){
-        std::cout<< "Game over - you win!\n" << "Time: " << t << "\nUsed turnes: " << turns;
+        std::cout<< "Game over - you win!\n" << "Time: " << t << "\nUsed turnes: " << turns << "\n";
     }
     else
-        std::cout<< "Game over - you lose!\n" << "Time: " << t << "\nUsed turns: " << turns;
+        std::cout<< "Game over - you lose!\n" << "Time: " << t << "\nUsed turns: " << turns << "\n";
 }
 
 //pick level
