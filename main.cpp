@@ -101,8 +101,7 @@ bool input_checker(int x, int y, std::string move) {
     yok = false;
 
   // checking input character
-  if (move == "1" || move == "2" || move == "3" || move == "4" || move == "5" ||
-      move == "6" || move == "7" || move == "8" || move == "9" || move == "e") {
+  if (move == "1" || move == "2" || move == "3" || move == "4" || move == "5" || move == "6" || move == "7" || move == "8" || move == "9" || move == "e") {
     mok = true;
   } else
     mok = false;
