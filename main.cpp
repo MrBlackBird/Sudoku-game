@@ -321,16 +321,19 @@ int main() {
       board.print_board();
       cout << "Number: ";
       cin >> num;
-      cout << "Coordinates: ";
-      cin >> xcord >> ycord;
+      cout << "Coordinate x (0->8): ";
+      cin >> xcord;
+      cout << "Coordinate y (0->8): ";
 
       // checking input
       if (board.input_checker(xcord, ycord, num) == true &&
           board.pos_empty_checker(xcord, ycord, num) ==
               true) { // correct values? position not empty?
         break;
-      } else
+      } else {
+        board.clear_screen();
         cout << "Invalid entries or position not empty, try again\n";
+      }
     }
 
     // update board
