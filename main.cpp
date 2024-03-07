@@ -276,8 +276,7 @@ public:
   // reading level from .csv file
   void read_level(string level) {
     // open file
-    ifstream file(
-        "/home/raven/Documents/GitHub/Sudoku-game/Sudoku-game/levels.csv");
+    ifstream file("YOUR PATH TO FILE");
     string line;
 
     // read lines
