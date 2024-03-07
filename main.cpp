@@ -139,8 +139,6 @@ public:
     }
   }
 
-  // FIX: prevent erasing level-loaded numbers by player
-
   // erase an entry
   void erase_pos(int x, int y) {
     if (mod[x][y] == true) {
@@ -260,19 +258,6 @@ public:
     }
   }
 
-  // loading chosen level
-  void load_level(vector<string> num, vector<int> cor, int row) {
-    // go over the numbers and their corresponding positions
-    for (size_t i = 0; i < num.size(); i++) {
-      // column from the 1D coordinate
-      int col = cor[i] % 9;
-
-      // place the number on the board
-      brd[row][col] = num[i];
-      mod[row][col] = false;
-    }
-  }
-
   // reading level from .csv file
   void read_level(string level) {
     // open file
@@ -307,7 +292,10 @@ public:
 
     file.close();
   }
+
+  void clear_screen() { cout << "\033[2J\033[H"; }
 };
+
 // main body
 int main() {
   // create board
@@ -320,10 +308,9 @@ int main() {
   float time = 0;
   string num;
   bool game_over = false;
-  board.create_mod();
   string lvl = board.pick_level();
+  board.create_mod();
   board.read_level(lvl);
-  board.print_board();
 
   // start timer
   chrono::steady_clock::time_point begin = chrono::steady_clock::now();
@@ -332,6 +319,7 @@ int main() {
 
     // get input
     while (true) {
+      board.print_board();
       cout << "Number: ";
       cin >> num;
       cout << "Coordinates: ";
@@ -356,6 +344,7 @@ int main() {
     board.print_board();
 
     turn++;
+    board.clear_screen();
 
     // endgame
     if (board.check_win(board.endgame_checker(), board.board_full()) == true) {
