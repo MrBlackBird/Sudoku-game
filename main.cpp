@@ -324,6 +324,7 @@ int main() {
       cout << "Coordinate x (0->8): ";
       cin >> xcord;
       cout << "Coordinate y (0->8): ";
+      cin >> ycord;
 
       // checking input
       if (board.input_checker(xcord, ycord, num) == true &&
@@ -338,15 +339,14 @@ int main() {
 
     // update board
     if (num == "e") {
+      board.clear_screen();
       board.erase_pos(xcord, ycord);
-    } else
+    } else {
+      board.clear_screen();
       board.write(xcord, ycord, num);
-
-    // print board
-    board.print_board();
+    }
 
     turn++;
-    board.clear_screen();
 
     // endgame
     if (board.check_win(board.endgame_checker(), board.board_full()) == true) {
